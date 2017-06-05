@@ -86,7 +86,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
         try {
             String marker_id = (String) marker.getTag();
+
             VisOrgAdapter visOrgAdapter = (VisOrgAdapter) recyclerView.getAdapter();
+            
             visOrgAdapter.selectListItem(marker_id);
         } catch (Exception e) {
             e.printStackTrace();

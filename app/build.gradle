@@ -28,7 +28,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.2.0'
     compile 'com.android.support:recyclerview-v7:25.2.0'
 
-
     compile 'com.google.android.gms:play-services:10.2.6'
     compile 'com.google.android.gms:play-services-maps:10.2.6'
     //compile 'com.android.support:appcompat-v7:25.3.1'

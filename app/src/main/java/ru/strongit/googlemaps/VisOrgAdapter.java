@@ -83,7 +83,7 @@ public class VisOrgAdapter extends RecyclerView.Adapter<VisOrgAdapter.ViewHolder
         return null;
     }
 
-    public void selectListItem(String id) {
+    void selectListItem(String id) {
         selectedItems.clear();
         for (int i = 0; i < mVisits.size(); i++) {
             if (mVisits.get(i).getOrganizationId().equals(id)) {
@@ -105,7 +105,7 @@ public class VisOrgAdapter extends RecyclerView.Adapter<VisOrgAdapter.ViewHolder
         TextView mOrg;
         LinearLayout myBackground;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             mVisit = (TextView) itemView.findViewById(R.id.visitId);
