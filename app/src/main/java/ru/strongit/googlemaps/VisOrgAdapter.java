@@ -17,11 +17,11 @@ import ru.strongit.googlemaps.model.OrganizationModel;
 import ru.strongit.googlemaps.model.VisitModel;
 
 /**
- * Created by user on 01.06.17.
+ * Класс адаптера (визиты-организации)
  */
-
 public class VisOrgAdapter extends RecyclerView.Adapter<VisOrgAdapter.ViewHolder> {
 
+    //Интерфейс события выбора визита
     public interface OnVisitSelectedListener {
         void onVisitSelected(String id);
     }
@@ -31,29 +31,39 @@ public class VisOrgAdapter extends RecyclerView.Adapter<VisOrgAdapter.ViewHolder
     private List<VisitModel> mVisits;
     private List<OrganizationModel> mOrgs;
 
-    //private LinearLayout myBackground;
+    //Массив хранеия выделенных элементов
     private SparseBooleanArray selectedItems = new SparseBooleanArray();
 
+
+    //конструктор
     public VisOrgAdapter(List<VisitModel> visits, List<OrganizationModel> orgs) {
         this.mVisits = visits;
         this.mOrgs = orgs;
     }
 
+
+    //переопределенная процедура на создание холдера
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.org_visit_item, parent, false);
+        View v = LayoutInflater
+                        .from(parent
+                        .getContext())
+                        .inflate(R.layout.org_visit_item, parent, false);
         return new ViewHolder(v);
     }
 
+    //переопределенная процедура на "связывание" данных и лейаута
     @Override
     public void onBindViewHolder(VisOrgAdapter.ViewHolder holder, int position) {
 
         VisitModel visit = mVisits.get(position);
-        OrganizationModel org = getOrgById(mOrgs, visit.getOrganizationId());
+        OrganizationModel org = getOrgById(visit.getOrganizationId());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            holder.mVisit.setText(Html.fromHtml(visit.getTitle(), Html.FROM_HTML_MODE_LEGACY));
-            holder.mOrg.setText(Html.fromHtml(org != null ? org.getTitle() : "---", Html.FROM_HTML_MODE_LEGACY));
+            holder.mVisit.setText(Html.fromHtml(visit.getTitle()
+                    , Html.FROM_HTML_MODE_LEGACY));
+            holder.mOrg.setText(Html.fromHtml(org != null ? org.getTitle() : "---"
+                    , Html.FROM_HTML_MODE_LEGACY));
         } else {
             holder.mVisit.setText(Html.fromHtml(visit.getTitle()));
             holder.mOrg.setText(Html.fromHtml(org != null ? org.getTitle() : "---"));
@@ -73,16 +83,18 @@ public class VisOrgAdapter extends RecyclerView.Adapter<VisOrgAdapter.ViewHolder
 
     }
 
-    private OrganizationModel getOrgById(List<OrganizationModel> orgs, String id) {
-        for (int i = 0; i < orgs.size(); i++) {
-            String oid = orgs.get(i).getOrganizationId();
+    //Возвращает организацию по указанному id
+    private OrganizationModel getOrgById(String id) {
+        for (int i = 0; i < mOrgs.size(); i++) {
+            String oid = mOrgs.get(i).getOrganizationId();
             if (oid.equals(id)) {
-                return orgs.get(i);
+                return mOrgs.get(i);
             }
         }
         return null;
     }
 
+    //Выделяет объект в списке по указанному id
     void selectListItem(String id) {
         selectedItems.clear();
         for (int i = 0; i < mVisits.size(); i++) {
@@ -93,6 +105,7 @@ public class VisOrgAdapter extends RecyclerView.Adapter<VisOrgAdapter.ViewHolder
         this.notifyDataSetChanged();
     }
 
+    //Возвращает количество объектов в mVisit
     @Override
     public int getItemCount() {
         if (mVisits == null)
@@ -100,6 +113,7 @@ public class VisOrgAdapter extends RecyclerView.Adapter<VisOrgAdapter.ViewHolder
         return mVisits.size();
     }
 
+    //Вложенный класс ViewHolder. Используется для наполнения списка данными
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView mVisit;
         TextView mOrg;
@@ -121,10 +135,8 @@ public class VisOrgAdapter extends RecyclerView.Adapter<VisOrgAdapter.ViewHolder
             } else {
                 selectedItems.put(getAdapterPosition(), true);
             }
-
             notifyDataSetChanged();
-
-            onVisitSelectedListener.onVisitSelected(v.getTag().toString());
+            onVisitSelectedListener.onVisitSelected(v.getTag().toString()); // fire callback
         }
 
     }

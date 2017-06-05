@@ -25,6 +25,9 @@ import ru.strongit.googlemaps.VisOrgAdapter.OnVisitSelectedListener;
 import ru.strongit.googlemaps.model.OrganizationModel;
 import ru.strongit.googlemaps.model.VisitModel;
 
+/**
+ * Класс основной активности
+ */
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, OnVisitSelectedListener {
 
     private GoogleMap mMap;
@@ -61,21 +64,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
+
+    //Инициализаяция карты
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setOnMarkerClickListener(this);
     }
 
+    //Обрабатывает событие нажатия на маркер карты
     @Override
     public boolean onMarkerClick(Marker marker) {
         marker.showInfoWindow();
@@ -88,7 +85,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             String marker_id = (String) marker.getTag();
 
             VisOrgAdapter visOrgAdapter = (VisOrgAdapter) recyclerView.getAdapter();
-            
+
             visOrgAdapter.selectListItem(marker_id);
         } catch (Exception e) {
             e.printStackTrace();
@@ -96,7 +93,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return false;
     }
 
-
+    //Запускается процесс получения данных
     public void retrofitGetData() {
         VisOrgAdapter vis_org_adapter = new VisOrgAdapter(visits, organisations);
         vis_org_adapter.onVisitSelectedListener = new OnVisitSelectedListener() {
@@ -140,6 +137,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
+    //Отображает маркеры организаций на карте
     private void addOrgsToMap(List<OrganizationModel> orgs) {
         for (int i = 0; i < orgs.size(); i++) {
             LatLng latlng = new LatLng(orgs.get(i).getLatitude(), orgs.get(i).getLongitude());
@@ -154,6 +152,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    //Выделяет маркер на карте по указанному тэгу
     public void selectMarkersByTag(String tag) {
         for (Marker marker : markers) {
             if (marker.getTag().toString().equals(tag)) {
@@ -167,6 +166,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    //Колбэк от адаптера на событие выделения объекта в списке
     @Override
     public void onVisitSelected(String id) {
         selectMarkersByTag(id);
