@@ -17,6 +17,4 @@ public interface GMapAndRetrofitApi {
 
     @GET("/getOrganizationListTest")
     Call<List<OrganizationModel>> getOrganizationList();
-
-
 }
